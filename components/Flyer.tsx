@@ -1,7 +1,6 @@
-
 import React from 'react';
-import { X, Printer, Phone, CheckCircle, MapPin, Globe } from 'lucide-react';
-import { BRAND_NAME, CONTACT_PHONE, OFFICE_ADDRESS_STREET, OFFICE_ADDRESS_CITY_STATE, HERO_IMAGE_URL, CONTACT_EMAIL } from '../constants';
+import { X, Printer, Phone, MapPin, Globe } from 'lucide-react';
+import { CONTACT_PHONE, OFFICE_ADDRESS_STREET, OFFICE_ADDRESS_CITY_STATE, HERO_IMAGE_URL, PROJECTS } from '../constants';
 import Logo from './Logo';
 
 interface FlyerProps {
@@ -16,34 +15,54 @@ const Flyer: React.FC<FlyerProps> = ({ isOpen, onClose }) => {
         window.print();
     };
 
+    const servicesList = [
+        "Architectural/Design Planning",
+        "Permitting and Approvals",
+        "Interior Build-Outs",
+        "Licensed MEP",
+        "Framing and Millwork",
+        "Flooring and Finishes",
+        "Reflective Ceiling Solutions",
+        "Project Management",
+        "Quality Assurance",
+        "Construction Support"
+    ];
+
     return (
-        <div className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm flex items-start justify-center overflow-y-auto p-4 md:p-8 print:p-0 print:bg-white print:absolute print:inset-0 print:z-50">
+        <div className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm flex items-start justify-center overflow-y-auto p-4 md:p-8">
             
-            {/* Print Styles to hide everything else */}
+            {/* CSS to handle printing visibility */}
             <style>{`
                 @media print {
-                    body > *:not(.flyer-portal) {
+                    /* Hide the main website content */
+                    #site-content, .no-print {
                         display: none !important;
                     }
-                    .flyer-portal {
-                        display: block !important;
+
+                    /* Ensure the flyer is visible and positioned correctly */
+                    body {
+                        background-color: white;
+                    }
+
+                    /* Reset any potential portal/modal styling issues for print */
+                    .flyer-print-container {
                         position: absolute !important;
                         top: 0 !important;
                         left: 0 !important;
                         width: 100% !important;
-                        height: 100% !important;
-                        background: white !important;
+                        height: auto !important;
                         z-index: 9999 !important;
+                        background: white !important;
+                        box-shadow: none !important;
+                        overflow: visible !important;
                     }
-                    .no-print {
-                        display: none !important;
-                    }
-                    /* Force background graphics */
+
+                    /* Ensure backgrounds print */
                     * {
                         -webkit-print-color-adjust: exact !important;
                         print-color-adjust: exact !important;
                     }
-                    /* Remove scrollbars/margins */
+                    
                     @page {
                         margin: 0;
                         size: auto;
@@ -51,107 +70,128 @@ const Flyer: React.FC<FlyerProps> = ({ isOpen, onClose }) => {
                 }
             `}</style>
 
-            {/* Wrapper for scoping print visibility */}
-            <div className="flyer-portal w-full max-w-[8.5in] bg-white shadow-2xl relative mx-auto print:shadow-none print:max-w-none">
+            {/* Flyer Container */}
+            <div className="flyer-print-container w-full max-w-[8.5in] bg-white shadow-2xl relative mx-auto flex flex-col min-h-[11in] overflow-hidden">
                 
-                {/* Toolbar (Hidden on Print) */}
-                <div className="absolute top-4 right-4 flex gap-3 no-print z-50">
+                {/* Floating Toolbar (Hidden when printing via CSS .no-print) */}
+                <div className="absolute top-4 right-4 flex gap-3 z-50 no-print">
                     <button 
-                        onClick={handlePrint}
-                        className="flex items-center gap-2 px-4 py-2 bg-brand-blue text-white font-bold rounded-md hover:bg-blue-900 transition-colors shadow-md"
+                        onClick={handlePrint} 
+                        className="flex items-center gap-2 px-4 py-2 bg-brand-blue text-white font-bold rounded-md hover:bg-blue-900 shadow-md transition-colors border border-white/20"
                     >
-                        <Printer size={18} />
-                        Print Flyer
+                        <Printer size={18} /> Print
                     </button>
                     <button 
-                        onClick={onClose}
-                        className="p-2 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition-colors"
+                        onClick={onClose} 
+                        className="p-2 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition-colors shadow-md"
                     >
                         <X size={24} />
                     </button>
                 </div>
 
-                {/* --- FLYER CONTENT (8.5 x 11 ratio approx) --- */}
-                <div className="flex flex-col min-h-[11in] w-full bg-white text-brand-textDark font-sans">
-                    
-                    {/* 1. HEADER */}
-                    <header className="bg-white px-8 py-6 flex justify-between items-center border-b border-gray-100">
-                        <div className="w-48">
-                            <Logo variant="light" className="w-full h-auto" />
-                        </div>
-                        <div className="text-right">
-                            <p className="text-sm text-brand-textLight font-medium uppercase tracking-wider mb-1">Call for a Quote</p>
-                            <div className="flex items-center justify-end gap-2 text-brand-blue font-heading font-bold text-2xl">
-                                <Phone size={24} className="text-brand-yellow" />
-                                {CONTACT_PHONE}
-                            </div>
-                        </div>
-                    </header>
+                {/* 1. HEADER */}
+                <header className="bg-white px-8 py-6 border-b border-gray-100 flex justify-between items-center">
+                    <div className="w-64">
+                        <Logo variant="light" className="w-full h-auto" />
+                    </div>
+                    <div className="text-right">
+                        <h2 className="font-heading font-bold text-brand-textDark text-lg uppercase tracking-wide">
+                            General Contractor
+                        </h2>
+                        <p className="text-brand-textLight text-sm">Commercial & Ground-Up Construction</p>
+                    </div>
+                </header>
 
-                    {/* 2. HERO IMAGE */}
-                    <div className="relative h-80 w-full overflow-hidden">
+                {/* 2. IMAGE COLLAGE */}
+                <div className="grid grid-cols-2 grid-rows-2 gap-1 h-[480px] w-full bg-gray-100 p-1">
+                    {/* Main Large Image (Hero) */}
+                    <div className="row-span-2 relative overflow-hidden group">
                         <img 
                             src={HERO_IMAGE_URL} 
-                            alt="Renovated Interior" 
-                            className="w-full h-full object-cover"
+                            alt="Main Construction" 
+                            className="w-full h-full object-cover" 
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-brand-blue/90 to-transparent flex items-end">
-                            <div className="px-8 py-8 w-full">
-                                <h1 className="text-white font-heading font-extrabold text-5xl tracking-tight drop-shadow-md">
-                                    Transforming Spaces.
-                                </h1>
-                                <p className="text-blue-100 text-xl mt-2 font-light">
-                                    Residential Renovations & Commercial Build-Outs
-                                </p>
-                            </div>
+                        <div className="absolute top-0 left-0 bg-brand-yellow text-brand-blue font-bold px-5 py-2 text-sm uppercase tracking-wider shadow-md">
+                            Building Dreams
                         </div>
                     </div>
+                    {/* Top Right */}
+                    <div className="relative overflow-hidden">
+                        <img 
+                            src={PROJECTS[0]?.imageUrl || "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800"} 
+                            alt="Commercial Project" 
+                            className="w-full h-full object-cover" 
+                        />
+                    </div>
+                    {/* Bottom Right */}
+                    <div className="relative overflow-hidden">
+                        <img 
+                            src={PROJECTS[2]?.imageUrl || "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800"} 
+                            alt="Project Detail" 
+                            className="w-full h-full object-cover" 
+                        />
+                    </div>
+                </div>
 
-                    {/* 3. BODY */}
-                    <div className="flex-grow bg-brand-grayLight px-10 py-10">
-                        <div className="grid grid-cols-2 gap-10">
-                            <div>
-                                <h2 className="font-heading font-bold text-2xl text-brand-blue mb-4 border-b-4 border-brand-yellow inline-block pb-1">
-                                    Our Services
-                                </h2>
-                                <p className="text-brand-textLight mb-6 text-lg leading-relaxed">
-                                    We provide high-end craftsmanship with transparent project management. From concept to completion, we handle it all.
-                                </p>
-                                <ul className="space-y-4">
-                                    {[
-                                        "Full Kitchen & Bath Remodels",
-                                        "Custom Home Additions",
-                                        "Commercial Tenant Improvements",
-                                        "Whole-Home Renovations",
-                                        "Structural Modifications"
-                                    ].map((service, i) => (
-                                        <li key={i} className="flex items-center gap-3 text-lg font-bold text-brand-textDark">
-                                            <CheckCircle className="text-brand-yellow w-6 h-6 flex-shrink-0" />
-                                            {service}
+                {/* 3. BLUE CURVED SECTION */}
+                <div className="flex-grow relative mt-[-40px] z-10">
+                    {/* SVG Curve Separator */}
+                    <svg className="w-full h-20 text-brand-blue fill-current" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <path d="M0 100 C 20 0 80 0 100 100 Z" />
+                    </svg>
+                    
+                    <div className="bg-brand-blue text-white px-12 pb-12 pt-0 h-full flex flex-col justify-between">
+                        
+                        {/* Services List Card */}
+                        <div className="flex justify-center -mt-12 mb-6 relative z-20">
+                            <div className="bg-white text-brand-textDark p-8 rounded-xl shadow-xl max-w-3xl w-full text-center border-b-8 border-brand-yellow">
+                                <h3 className="font-heading font-bold text-2xl text-brand-blue mb-6 uppercase tracking-wide">
+                                    Our Specialties
+                                </h3>
+                                <ul className="grid grid-cols-2 gap-x-8 gap-y-2 text-left text-sm font-bold text-slate-700">
+                                    {servicesList.map((service, index) => (
+                                        <li key={index} className="flex items-start gap-2">
+                                            <span className="text-brand-yellow mt-1">●</span> 
+                                            <span>{service}</span>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
-                            <div className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm flex flex-col justify-center items-center text-center">
-                                <h3 className="font-heading font-bold text-xl text-brand-blue mb-4">Why Dreamcraft?</h3>
-                                <div className="space-y-4 text-left w-full">
-                                    <div className="flex items-center gap-3">
-                                        <span className="w-8 h-8 rounded-full bg-blue-100 text-brand-blue flex items-center justify-center font-bold">1</span>
-                                        <span className="font-medium">Fully Licensed & Insured</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <span className="w-8 h-8 rounded-full bg-blue-100 text-brand-blue flex items-center justify-center font-bold">2</span>
-                                        <span className="font-medium">Detailed, Transparent Pricing</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <span className="w-8 h-8 rounded-full bg-blue-100 text-brand-blue flex items-center justify-center font-bold">3</span>
-                                        <span className="font-medium">On-Time Project Delivery</span>
-                                    </div>
+                        </div>
+
+                        {/* Bottom Contact Info Section */}
+                        <div className="flex items-end justify-between mt-auto">
+                            {/* Real QR Code pointing to dreamcraftdevelopers.com */}
+                            <div className="bg-white p-2 rounded-lg inline-block shadow-lg">
+                                <img 
+                                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://dreamcraftdevelopers.com`}
+                                    alt="Scan to Visit Website"
+                                    className="w-20 h-20"
+                                />
+                                <p className="text-center text-brand-textDark text-[10px] font-bold mt-1 uppercase">Scan Me</p>
+                            </div>
+
+                            {/* Address & Phone */}
+                            <div className="text-right space-y-2">
+                                <div className="flex items-center justify-end gap-3">
+                                    <Phone className="text-brand-yellow w-6 h-6" />
+                                    <span className="font-heading font-bold text-3xl">{CONTACT_PHONE}</span>
+                                </div>
+                                <div className="flex items-center justify-end gap-3 text-blue-200">
+                                    <Globe className="w-5 h-5" />
+                                    <span className="text-lg">www.dreamcraftdevelopers.com</span>
+                                </div>
+                                <div className="flex items-center justify-end gap-3 text-blue-200">
+                                    <MapPin className="w-5 h-5" />
+                                    <span className="text-sm">{OFFICE_ADDRESS_STREET}, {OFFICE_ADDRESS_CITY_STATE}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
-                    {/* 4. OFFER BAND */}
-                    <div className="bg-brand-yellow px-8 py-6 text-center">
-                        <h2 className="font-heading font-black text-brand-blue text-3xl uppercase tracking-wide">
+export default Flyer;

@@ -1,23 +1,26 @@
+
 import React, { useState } from 'react';
-import { Facebook, Instagram, Linkedin, Twitter, Loader2, Check } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Loader2, Check, Printer } from 'lucide-react';
 import { BRAND_NAME, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY } from '../constants';
 import emailjs from '@emailjs/browser';
 import Logo from './Logo';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+    onOpenFlyer: () => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onOpenFlyer }) => {
     const currentYear = new Date().getFullYear();
     const [email, setEmail] = useState('');
     const [subStatus, setSubStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
     const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         e.preventDefault();
-        
-        // If it's just a placeholder link, do nothing
         if (href === '#') return;
 
         const element = document.querySelector(href);
         if (element) {
-            const navHeight = 96; // Adjusted to match new Navbar height
+            const navHeight = 96; 
             const elementPosition = element.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.scrollY - navHeight;
 
@@ -33,9 +36,7 @@ const Footer: React.FC = () => {
         if (!email) return;
         setSubStatus('loading');
 
-        // Check if keys are placeholders
         if ((EMAILJS_SERVICE_ID as string) === "YOUR_SERVICE_ID") {
-            console.warn("EmailJS credentials not set. Simulating subscription.");
             setTimeout(() => {
                 setSubStatus('success');
                 setEmail('');
@@ -45,8 +46,6 @@ const Footer: React.FC = () => {
         }
 
         try {
-            // We use emailjs.send() here since we aren't using a full form ref
-            // You need to make sure your EmailJS template expects a variable named "email" or "from_email"
             await emailjs.send(
                 EMAILJS_SERVICE_ID,
                 EMAILJS_TEMPLATE_ID,
@@ -77,7 +76,7 @@ const Footer: React.FC = () => {
                             <Logo variant="dark" className="h-14 w-auto" />
                         </div>
                         <p className="text-blue-200 text-sm leading-relaxed">
-                            Building excellence through integrity, transparency, and skilled craftsmanship. Your partner in creating spaces that last.
+                            Building excellence through integrity, transparency, and skilled craftsmanship. Specializing in Ground-Up Construction and Interior Finish-Outs.
                         </p>
                         <div className="flex space-x-4 pt-2">
                             <a href="#" onClick={(e) => handleScroll(e, '#')} className="w-8 h-8 rounded-full bg-blue-800 flex items-center justify-center hover:bg-brand-yellow hover:text-brand-blue transition-all">
@@ -92,18 +91,18 @@ const Footer: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Links */}
+                    {/* Services */}
                     <div>
                         <h4 className="font-heading font-bold text-lg mb-6 text-brand-yellow">Services</h4>
                         <ul className="space-y-3 text-blue-100">
-                            <li><a href="#" onClick={(e) => handleScroll(e, '#')} className="hover:text-white transition-colors">General Contracting</a></li>
-                            <li><a href="#" onClick={(e) => handleScroll(e, '#')} className="hover:text-white transition-colors">Home Additions</a></li>
-                            <li><a href="#" onClick={(e) => handleScroll(e, '#')} className="hover:text-white transition-colors">Kitchen Remodeling</a></li>
-                            <li><a href="#" onClick={(e) => handleScroll(e, '#')} className="hover:text-white transition-colors">Commercial Build-Outs</a></li>
+                            <li><a href="#" onClick={(e) => handleScroll(e, '#')} className="hover:text-white transition-colors">Ground-Up Construction</a></li>
+                            <li><a href="#" onClick={(e) => handleScroll(e, '#')} className="hover:text-white transition-colors">Interior Finish-Outs</a></li>
+                            <li><a href="#" onClick={(e) => handleScroll(e, '#')} className="hover:text-white transition-colors">Licensed MEP</a></li>
+                            <li><a href="#" onClick={(e) => handleScroll(e, '#')} className="hover:text-white transition-colors">Planning & Permitting</a></li>
                         </ul>
                     </div>
 
-                    {/* Links */}
+                    {/* Company */}
                     <div>
                         <h4 className="font-heading font-bold text-lg mb-6 text-brand-yellow">Company</h4>
                         <ul className="space-y-3 text-blue-100">
@@ -111,13 +110,22 @@ const Footer: React.FC = () => {
                             <li><a href="#projects" onClick={(e) => handleScroll(e, '#projects')} className="hover:text-white transition-colors">Our Portfolio</a></li>
                             <li><a href="#" onClick={(e) => handleScroll(e, '#')} className="hover:text-white transition-colors">Careers</a></li>
                             <li><a href="#" onClick={(e) => handleScroll(e, '#')} className="hover:text-white transition-colors">Privacy Policy</a></li>
+                            <li>
+                                <button 
+                                    onClick={onOpenFlyer}
+                                    className="flex items-center gap-2 text-brand-yellow hover:text-white transition-colors font-bold mt-2 group text-left"
+                                >
+                                    <Printer size={16} className="group-hover:scale-110 transition-transform" />
+                                    Printable Flyer
+                                </button>
+                            </li>
                         </ul>
                     </div>
 
                     {/* Newsletter */}
                     <div>
                         <h4 className="font-heading font-bold text-lg mb-6 text-brand-yellow">Newsletter</h4>
-                        <p className="text-blue-200 text-sm mb-4">Subscribe for project updates and tips.</p>
+                        <p className="text-blue-200 text-sm mb-4">Subscribe for project updates.</p>
                         <form className="flex flex-col gap-2" onSubmit={handleSubscribe}>
                             <input 
                                 type="email" 

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { HERO_IMAGE_URL } from '../constants';
@@ -36,7 +37,7 @@ const Hero: React.FC = () => {
                         </h1>
                         
                         <p className="text-lg sm:text-xl text-brand-textDark max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                            We specialize in high-end residential renovations and commercial build-outs. Experience construction with precision, transparency, and integrity.
+                            Specializing in ground-up construction and high-end interior finish-outs. We deliver precision, transparency, and integrity for your commercial and residential projects.
                         </p>
                         
                         <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
