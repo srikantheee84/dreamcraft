@@ -50,7 +50,7 @@ const Process: React.FC = () => {
                                 <div className="flex flex-col items-center text-center">
                                     <div className="w-24 h-24 bg-white border-4 border-blue-50 rounded-full flex items-center justify-center mb-6 group-hover:border-brand-yellow transition-colors duration-300 shadow-sm">
                                         <div className="w-16 h-16 bg-brand-blue rounded-full flex items-center justify-center text-white">
-                                            <step.icon size={28} />
+                                            {step.icon && <step.icon size={28} />}
                                         </div>
                                     </div>
                                     <div className="absolute top-0 md:-top-8 right-0 md:right-auto md:left-1/2 md:-translate-x-1/2 bg-blue-50 text-brand-blue font-bold text-sm w-8 h-8 rounded-full flex items-center justify-center border border-blue-100">

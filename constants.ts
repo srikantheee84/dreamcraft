@@ -1,5 +1,5 @@
 
-import { Hammer, Home, Ruler, HardHat, Clock, ShieldCheck, Award, CheckCircle, Settings, PenTool, Truck, DraftingCompass } from 'lucide-react';
+import { Ruler, Clock, ShieldCheck, Award, CheckCircle, Settings, Truck, DraftingCompass } from 'lucide-react';
 import { ServiceItem, ProjectItem, TestimonialItem, DifferentiatorItem } from './types';
 
 export const BRAND_NAME = "Dreamcraft Developers";

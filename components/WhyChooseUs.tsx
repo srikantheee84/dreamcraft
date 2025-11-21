@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { DIFFERENTIATORS } from '../constants';
 
@@ -20,7 +21,7 @@ const WhyChooseUs: React.FC = () => {
                         <div key={item.id} className="flex gap-6">
                             <div className="flex-shrink-0">
                                 <div className="w-12 h-12 rounded-full bg-brand-yellow/10 flex items-center justify-center border border-brand-yellow/20">
-                                    <item.icon className="w-6 h-6 text-brand-blue" />
+                                    {item.icon && <item.icon className="w-6 h-6 text-brand-blue" />}
                                 </div>
                             </div>
                             <div>

@@ -55,16 +55,17 @@ Homeowners seeking high-end renovations, kitchen/bath remodels, and small busine
 **Prerequisites:**
 *   Node.js installed.
 
-**Install & Run:**
+**Install & Run Locally:**
 ```bash
 npm install
-npm start
+npm run dev
 ```
 
 **Deploy to GitHub Pages:**
-1.  Update `package.json` with `"homepage": "https://<your-username>.github.io/<repo-name>"`
-2.  Run `npm run build`
-3.  Deploy the `dist` or `build` folder using `gh-pages`.
+1.  Push this code to a GitHub repository.
+2.  Go to **Settings > Pages** in your repository.
+3.  Under **Build and deployment > Source**, select **GitHub Actions**.
+4.  The workflow defined in `.github/workflows/deploy.yml` will automatically build and deploy your site whenever you push to `main`.
 
 ---
 

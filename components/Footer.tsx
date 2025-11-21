@@ -1,15 +1,15 @@
-
 import React, { useState } from 'react';
-import { Facebook, Instagram, Linkedin, Loader2, Check, Printer } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Loader2, Check, Printer, Share2 } from 'lucide-react';
 import { BRAND_NAME, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY } from '../constants';
 import emailjs from '@emailjs/browser';
 import Logo from './Logo';
 
 interface FooterProps {
     onOpenFlyer: () => void;
+    onOpenSocialKit: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ onOpenFlyer }) => {
+const Footer: React.FC<FooterProps> = ({ onOpenFlyer, onOpenSocialKit }) => {
     const currentYear = new Date().getFullYear();
     const [email, setEmail] = useState('');
     const [subStatus, setSubStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -117,6 +117,15 @@ const Footer: React.FC<FooterProps> = ({ onOpenFlyer }) => {
                                 >
                                     <Printer size={16} className="group-hover:scale-110 transition-transform" />
                                     Printable Flyer
+                                </button>
+                            </li>
+                            <li>
+                                <button 
+                                    onClick={onOpenSocialKit}
+                                    className="flex items-center gap-2 text-brand-yellow hover:text-white transition-colors font-bold mt-1 group text-left"
+                                >
+                                    <Share2 size={16} className="group-hover:scale-110 transition-transform" />
+                                    Social Media Kit
                                 </button>
                             </li>
                         </ul>

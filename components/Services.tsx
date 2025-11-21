@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { SERVICES } from '../constants';
 
@@ -19,7 +20,9 @@ const Services: React.FC = () => {
                             className="group p-8 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-brand-yellow/30 transition-all duration-300"
                         >
                             <div className="w-14 h-14 bg-blue-50 rounded-lg flex items-center justify-center mb-6 group-hover:bg-brand-blue transition-colors duration-300">
-                                <service.icon className="w-7 h-7 text-brand-blue group-hover:text-brand-yellow transition-colors duration-300" />
+                                {service.icon && (
+                                    <service.icon className="w-7 h-7 text-brand-blue group-hover:text-brand-yellow transition-colors duration-300" />
+                                )}
                             </div>
                             <h3 className="font-heading text-xl font-bold text-brand-textDark mb-3 group-hover:text-brand-blue transition-colors">
                                 {service.title}
